@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Data</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="sunrise"></div>
+            <div class="sunset"></div>
+            <h1>My Data</h1>
+            <div class="progress-container">
+                <div class="progress"></div>
+            </div>
+            <h2>Overall Evaluation: <span id="evaluation"></span></h2>
+        </header>
+        <main>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Temperature</th>
+                        <th>Humidity</th>
+                        <th>UV</th>
+                        <th>Water</th>
+                    </tr>
+                </thead>
+                <tbody id="data">
+                </tbody>
+            </table>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

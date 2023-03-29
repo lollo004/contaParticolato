@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Data</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Field 1</th>
+                <th>Field 2</th>
+                <th>Field 3</th>
+            </tr>
+        </thead>
+        <tbody id="data">
+        </tbody>
+    </table>
+    <script>
+        $(function() {
+            $.getJSON('/data', function(data) {
+                $.each(data, function(i, item) {
+                    var row = $('<tr>').appendTo($('#data'));
+                    $('<td>').text(item.timestamp).appendTo(row);
+                    $('<td>').text(item.temperature).appendTo(row);
+                    $('<td>').text(item.humidity).appendTo(row);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

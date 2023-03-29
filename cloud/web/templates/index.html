@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Data</title>
+    <style>
+        body {
+            background-color: #3CB371;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #progress {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            margin-top: 50px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+        #progress .progress {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            clip: rect(0, 100px, 200px, 0);
+            background-color: #2E8B57;
+        }
+        table {
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 50px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 2px solid white;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #2E8B57;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(function() {
+            function updateData() {
+                $.getJSON('/data', function(data) {
+                    var total = data.length;
+                    var sum = data.reduce(function(acc, item) {
+                        return acc + item.temperature + item.humidity + item.UV + item.water;
+                    }, 0);
+                    var avg = sum / (total * 4);
+                    $('#progress .progress').css('clip', 'rect(0, ' + avg + 'px, 200px, 0)');
+                    $('#evaluation').text(avg.toFixed(1));
+                    $('#data').empty();
+                    $.each(data, function(i, item) {
+                        var row = $('<tr>').appendTo($('#data'));
+                        $('<td>').text(item.timestamp).appendTo(row);
+                        $('<td>').text(item.temperature).appendTo(row);
+                        $('<td>').text(item.humidity).appendTo(row);
+                        $('<td>').text(item.UV).appendTo(row);
+                        $('<td>').text(item.water).appendTo(row);
+                    });
+                });
+            }
+            updateData();
+            setInterval(updateData, 5000);
+        });
+    </script>
+</head>
+<body>
+    <h1>PlantWhisperer</h1>
+    <div id="progress">
+        <div class="progress"></div>
+    </div>
+    <h2>Overall Evaluation: <span id="evaluation"></span></h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Temperature</th>
+                <th>Humidity</th>
+                <th>UV</th>
+                <th>Water</th>
+            </tr>
+        </thead>
+        <tbody id="data">
+        </tbody>
+    </table>
+</body>
+</html>

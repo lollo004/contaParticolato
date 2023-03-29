@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  mongodb:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: db
+    hostname: mongodb
+    command: "mongod --noauth"
+
+  mqtt-collector:
+    build: ./mqtt-collector
+    restart: always
+    environment:
+      MQTT_HOST: mqtt.ssh.edu.it
+      MQTT_PORT: 1883
+      MQTT_TOPIC: borghi
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+    depends_on:
+      - mongodb
+
+  web:
+    build: ./web
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      MONGODB_HOST: mongodb
+      MONGODB_PORT: 27017
+    depends_on:
+      - mongodb
